@@ -1,0 +1,467 @@
+{
+  "revision": 0,
+  "last_node_id": 20,
+  "last_link_id": 30,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [-1280, 20],
+      "size": [330, 110],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {"name": "unet_name", "type": "COMBO", "widget": {"name": "unet_name"}, "link": null},
+        {"name": "weight_dtype", "type": "COMBO", "widget": {"name": "weight_dtype"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "MODEL", "type": "MODEL", "slot_index": 0, "links": [5, 20]}
+      ],
+      "properties": {"Node name for S&R": "UNETLoader"},
+      "widgets_values": ["qwen_image_bf16.safetensors", "default"]
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [-1280, 180],
+      "size": [330, 150],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {"name": "clip_name", "type": "COMBO", "widget": {"name": "clip_name"}, "link": null},
+        {"name": "type", "type": "COMBO", "widget": {"name": "type"}, "link": null},
+        {"name": "device", "type": "COMBO", "widget": {"name": "device"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "CLIP", "type": "CLIP", "slot_index": 0, "links": [1, 2]}
+      ],
+      "properties": {"Node name for S&R": "CLIPLoader"},
+      "widgets_values": ["qwen_2.5_vl_7b.safetensors", "qwen_image", "default"]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [-1280, 380],
+      "size": [330, 110],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {"name": "vae_name", "type": "COMBO", "widget": {"name": "vae_name"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "VAE", "type": "VAE", "slot_index": 0, "links": [11, 13, 21]}
+      ],
+      "properties": {"Node name for S&R": "VAELoader"},
+      "widgets_values": ["qwen_image_vae.safetensors"]
+    },
+    {
+      "id": 4,
+      "type": "UpscaleModelLoader",
+      "pos": [-1280, 540],
+      "size": [330, 90],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {"name": "model_name", "type": "COMBO", "widget": {"name": "model_name"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "UPSCALE_MODEL", "type": "UPSCALE_MODEL", "slot_index": 0, "links": [14]}
+      ],
+      "properties": {"Node name for S&R": "UpscaleModelLoader"},
+      "widgets_values": ["RealESRGAN_x2.pth"]
+    },
+    {
+      "id": 5,
+      "type": "MrFlowQwenPreset",
+      "pos": [-1280, 720],
+      "size": [320, 200],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {"name": "target_width", "type": "INT", "widget": {"name": "target_width"}, "link": null},
+        {"name": "target_height", "type": "INT", "widget": {"name": "target_height"}, "link": null},
+        {"name": "preset", "type": "COMBO", "widget": {"name": "preset"}, "link": null},
+        {"name": "upscale_factor", "type": "FLOAT", "widget": {"name": "upscale_factor"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "low_width", "type": "INT", "links": [3]},
+        {"name": "low_height", "type": "INT", "links": [4]},
+        {"name": "target_width", "type": "INT", "links": [15]},
+        {"name": "target_height", "type": "INT", "links": [16]},
+        {"name": "refine_denoise", "type": "FLOAT", "links": []},
+        {"name": "stage1_steps", "type": "INT", "links": []},
+        {"name": "refine_steps", "type": "INT", "links": []}
+      ],
+      "properties": {"Node name for S&R": "MrFlowQwenPreset"},
+      "widgets_values": [1024, 1024, "12plus1", 2.0]
+    },
+    {
+      "id": 6,
+      "type": "CLIPTextEncode",
+      "pos": [-830, 20],
+      "size": [430, 260],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {"name": "clip", "type": "CLIP", "link": 1},
+        {"name": "text", "type": "STRING", "widget": {"name": "text"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "CONDITIONING", "type": "CONDITIONING", "slot_index": 0, "links": [6, 17]}
+      ],
+      "title": "Positive Prompt",
+      "properties": {"Node name for S&R": "CLIPTextEncode"},
+      "widgets_values": ["a fluffy cat sitting by a window, soft daylight, detailed fur"]
+    },
+    {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [-830, 340],
+      "size": [430, 180],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {"name": "clip", "type": "CLIP", "link": 2},
+        {"name": "text", "type": "STRING", "widget": {"name": "text"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "CONDITIONING", "type": "CONDITIONING", "slot_index": 0, "links": [7, 18]}
+      ],
+      "title": "Negative Prompt",
+      "properties": {"Node name for S&R": "CLIPTextEncode"},
+      "widgets_values": [""]
+    },
+    {
+      "id": 8,
+      "type": "EmptySD3LatentImage",
+      "pos": [-820, 720],
+      "size": [270, 170],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {"name": "width", "type": "INT", "widget": {"name": "width"}, "link": 3},
+        {"name": "height", "type": "INT", "widget": {"name": "height"}, "link": 4},
+        {"name": "batch_size", "type": "INT", "widget": {"name": "batch_size"}, "link": 30}
+      ],
+      "outputs": [
+        {"name": "LATENT", "type": "LATENT", "links": [8]}
+      ],
+      "properties": {"Node name for S&R": "EmptySD3LatentImage"},
+      "widgets_values": [512, 512, 1]
+    },
+    {
+      "id": 9,
+      "type": "KSampler",
+      "pos": [-370, 120],
+      "size": [300, 480],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 5},
+        {"name": "positive", "type": "CONDITIONING", "link": 6},
+        {"name": "negative", "type": "CONDITIONING", "link": 7},
+        {"name": "latent_image", "type": "LATENT", "link": 8},
+        {"name": "seed", "type": "INT", "widget": {"name": "seed"}, "link": null},
+        {"name": "steps", "type": "INT", "widget": {"name": "steps"}, "link": 9},
+        {"name": "cfg", "type": "FLOAT", "widget": {"name": "cfg"}, "link": null},
+        {"name": "sampler_name", "type": "COMBO", "widget": {"name": "sampler_name"}, "link": null},
+        {"name": "scheduler", "type": "COMBO", "widget": {"name": "scheduler"}, "link": null},
+        {"name": "denoise", "type": "FLOAT", "widget": {"name": "denoise"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "LATENT", "type": "LATENT", "slot_index": 0, "links": [10]}
+      ],
+      "properties": {"Node name for S&R": "KSampler"},
+      "widgets_values": [42, "randomize", 12, 4.0, "euler", "simple", 1.0]
+    },
+    {
+      "id": 10,
+      "type": "VAEDecode",
+      "pos": [30, 120],
+      "size": [220, 100],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {"name": "samples", "type": "LATENT", "link": 10},
+        {"name": "vae", "type": "VAE", "link": 11}
+      ],
+      "outputs": [
+        {"name": "IMAGE", "type": "IMAGE", "slot_index": 0, "links": [12, 27]}
+      ],
+      "properties": {"Node name for S&R": "VAEDecode"}
+    },
+    {
+      "id": 11,
+      "type": "MrFlowUpscaleEncode",
+      "pos": [350, 80],
+      "size": [320, 240],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {"name": "image", "type": "IMAGE", "link": 12},
+        {"name": "vae", "type": "VAE", "link": 13},
+        {"name": "upscale_model", "type": "UPSCALE_MODEL", "link": 14},
+        {"name": "target_width", "type": "INT", "widget": {"name": "target_width"}, "link": 15},
+        {"name": "target_height", "type": "INT", "widget": {"name": "target_height"}, "link": 16},
+        {"name": "resize_method", "type": "COMBO", "widget": {"name": "resize_method"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "upscaled_image", "type": "IMAGE", "links": [28]},
+        {"name": "prepared_latent", "type": "LATENT", "links": [19, 24]}
+      ],
+      "properties": {"Node name for S&R": "MrFlowUpscaleEncode"},
+      "widgets_values": ["bicubic"]
+    },
+    {
+      "id": 12,
+      "type": "MrFlowAttachReferenceLatent",
+      "pos": [740, 80],
+      "size": [300, 130],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {"name": "positive", "type": "CONDITIONING", "link": 17},
+        {"name": "negative", "type": "CONDITIONING", "link": 18},
+        {"name": "latent", "type": "LATENT", "link": 19}
+      ],
+      "outputs": [
+        {"name": "positive", "type": "CONDITIONING", "links": [22]},
+        {"name": "negative", "type": "CONDITIONING", "links": [23]}
+      ],
+      "properties": {"Node name for S&R": "MrFlowAttachReferenceLatent"}
+    },
+    {
+      "id": 13,
+      "type": "MrFlowQwenRefine",
+      "pos": [1090, 20],
+      "size": [340, 380],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 20},
+        {"name": "vae", "type": "VAE", "link": 21},
+        {"name": "positive", "type": "CONDITIONING", "link": 22},
+        {"name": "negative", "type": "CONDITIONING", "link": 23},
+        {"name": "latent_image", "type": "LATENT", "link": 24},
+        {"name": "seed", "type": "INT", "widget": {"name": "seed"}, "link": null},
+        {"name": "steps", "type": "INT", "widget": {"name": "steps"}, "link": 25},
+        {"name": "cfg", "type": "FLOAT", "widget": {"name": "cfg"}, "link": null},
+        {"name": "sampler_name", "type": "COMBO", "widget": {"name": "sampler_name"}, "link": null},
+        {"name": "denoise", "type": "FLOAT", "widget": {"name": "denoise"}, "link": 26},
+        {"name": "print_schedule", "type": "BOOLEAN", "widget": {"name": "print_schedule"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "refined_latent", "type": "LATENT", "links": []},
+        {"name": "refined_image", "type": "IMAGE", "links": [29]}
+      ],
+      "properties": {"Node name for S&R": "MrFlowQwenRefine"},
+      "widgets_values": [43, "randomize", 1, 4.0, "euler", 0.12, true]
+    },
+    {
+      "id": 14,
+      "type": "SaveImage",
+      "pos": [310, 420],
+      "size": [320, 100],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 27},
+        {"name": "filename_prefix", "type": "STRING", "widget": {"name": "filename_prefix"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "images", "type": "IMAGE", "links": []}
+      ],
+      "properties": {"Node name for S&R": "SaveImage"},
+      "widgets_values": ["MrFlow/qwen_stage1_generate"]
+    },
+    {
+      "id": 15,
+      "type": "SaveImage",
+      "pos": [690, 420],
+      "size": [320, 100],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 28},
+        {"name": "filename_prefix", "type": "STRING", "widget": {"name": "filename_prefix"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "images", "type": "IMAGE", "links": []}
+      ],
+      "properties": {"Node name for S&R": "SaveImage"},
+      "widgets_values": ["MrFlow/qwen_stage2_sr"]
+    },
+    {
+      "id": 16,
+      "type": "MrFlowSaveImage",
+      "pos": [1450, 420],
+      "size": [320, 100],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 29},
+        {"name": "filename_prefix", "type": "STRING", "widget": {"name": "filename_prefix"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "images", "type": "IMAGE", "links": []}
+      ],
+      "properties": {"Node name for S&R": "MrFlowSaveImage"},
+      "widgets_values": ["MrFlow/qwen_stage4_refine"]
+    },
+    {
+      "id": 17,
+      "type": "PrimitiveInt",
+      "pos": [-820, 940],
+      "size": [270, 110],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {"name": "value", "type": "INT", "widget": {"name": "value"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "INT", "type": "INT", "links": [9]}
+      ],
+      "title": "Low-Res Steps",
+      "properties": {
+        "Node name for S&R": "PrimitiveInt",
+        "min": 1,
+        "max": 10000,
+        "step": 1,
+        "display": "number"
+      },
+      "widgets_values": [12, "fixed"]
+    },
+    {
+      "id": 18,
+      "type": "PrimitiveInt",
+      "pos": [1090, 440],
+      "size": [270, 110],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {"name": "value", "type": "INT", "widget": {"name": "value"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "INT", "type": "INT", "links": [25]}
+      ],
+      "title": "Refine Steps",
+      "properties": {
+        "Node name for S&R": "PrimitiveInt",
+        "min": 1,
+        "max": 10000,
+        "step": 1,
+        "display": "number"
+      },
+      "widgets_values": [1, "fixed"]
+    },
+    {
+      "id": 19,
+      "type": "PrimitiveFloat",
+      "pos": [1390, 440],
+      "size": [270, 110],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {"name": "value", "type": "FLOAT", "widget": {"name": "value"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "FLOAT", "type": "FLOAT", "links": [26]}
+      ],
+      "title": "Refine Strength",
+      "properties": {
+        "Node name for S&R": "PrimitiveFloat",
+        "min": 0.0,
+        "max": 1.0,
+        "step": 0.01,
+        "precision": 2,
+        "display": "number"
+      },
+      "widgets_values": [0.12]
+    },
+    {
+      "id": 20,
+      "type": "PrimitiveInt",
+      "pos": [-520, 720],
+      "size": [270, 110],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {"name": "value", "type": "INT", "widget": {"name": "value"}, "link": null}
+      ],
+      "outputs": [
+        {"name": "INT", "type": "INT", "links": [30]}
+      ],
+      "title": "Batch Size",
+      "properties": {
+        "Node name for S&R": "PrimitiveInt",
+        "min": 1,
+        "max": 4096,
+        "step": 1,
+        "display": "number"
+      },
+      "widgets_values": [1, "fixed"]
+    }
+  ],
+  "links": [
+    [1, 2, 0, 6, 0, "CLIP"],
+    [2, 2, 0, 7, 0, "CLIP"],
+    [3, 5, 0, 8, 0, "INT"],
+    [4, 5, 1, 8, 1, "INT"],
+    [5, 1, 0, 9, 0, "MODEL"],
+    [6, 6, 0, 9, 1, "CONDITIONING"],
+    [7, 7, 0, 9, 2, "CONDITIONING"],
+    [8, 8, 0, 9, 3, "LATENT"],
+    [9, 5, 5, 9, 5, "INT"],
+    [10, 9, 0, 10, 0, "LATENT"],
+    [11, 3, 0, 10, 1, "VAE"],
+    [12, 10, 0, 11, 0, "IMAGE"],
+    [13, 3, 0, 11, 1, "VAE"],
+    [14, 4, 0, 11, 2, "UPSCALE_MODEL"],
+    [15, 5, 2, 11, 3, "INT"],
+    [16, 5, 3, 11, 4, "INT"],
+    [17, 6, 0, 12, 0, "CONDITIONING"],
+    [18, 7, 0, 12, 1, "CONDITIONING"],
+    [19, 11, 1, 12, 2, "LATENT"],
+    [20, 1, 0, 13, 0, "MODEL"],
+    [21, 3, 0, 13, 1, "VAE"],
+    [22, 12, 0, 13, 2, "CONDITIONING"],
+    [23, 12, 1, 13, 3, "CONDITIONING"],
+    [24, 11, 1, 13, 4, "LATENT"],
+    [25, 18, 0, 13, 6, "INT"],
+    [26, 19, 0, 13, 9, "FLOAT"],
+    [27, 10, 0, 14, 0, "IMAGE"],
+    [28, 11, 0, 15, 0, "IMAGE"],
+    [29, 13, 1, 16, 0, "IMAGE"],
+    [30, 20, 0, 8, 2, "INT"]
+  ],
+  "groups": [
+    {"id": 1, "title": "Step 1 - Load Models", "bounding": [-1310, -10, 390, 660], "color": "#3f789e", "font_size": 24, "flags": {}},
+    {"id": 2, "title": "Step 2 - Low-Res Generation", "bounding": [-860, -10, 820, 1080], "color": "#3f789e", "font_size": 24, "flags": {}},
+    {"id": 3, "title": "Step 3 - Super-Resolution", "bounding": [10, 10, 1050, 560], "color": "#3f789e", "font_size": 24, "flags": {}},
+    {"id": 4, "title": "Step 4 - High-Res Refine", "bounding": [1070, -10, 740, 700], "color": "#3f789e", "font_size": 24, "flags": {}}
+  ],
+  "version": 0.4,
+  "extra": {
+    "workflowRendererVersion": "7.7"
+  }
+}

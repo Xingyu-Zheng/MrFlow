@@ -1,0 +1,1 @@
+# No extra Python requirements beyond the target ComfyUI environment.

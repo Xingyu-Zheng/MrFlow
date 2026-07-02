@@ -1,0 +1,12 @@
+[project]
+name = "comfyui-mrflow"
+version = "0.1.0"
+description = "Minimal ComfyUI custom nodes for a MrFlow-style Qwen workflow."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+[tool.comfy]
+PublisherId = "zxy"
+DisplayName = "ComfyUI-MrFlow"
+Icon = ""

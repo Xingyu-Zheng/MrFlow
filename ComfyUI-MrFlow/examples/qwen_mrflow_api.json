@@ -1,0 +1,225 @@
+{
+  "preset": {
+    "class_type": "MrFlowQwenPreset",
+    "inputs": {
+      "target_width": 1024,
+      "target_height": 1024,
+      "preset": "12plus1",
+      "upscale_factor": 2.0
+    }
+  },
+  "unet": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "qwen_image_bf16.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "clip": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_2.5_vl_7b.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    }
+  },
+  "vae": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "upscale_model": {
+    "class_type": "UpscaleModelLoader",
+    "inputs": {
+      "model_name": "RealESRGAN_x2.pth"
+    }
+  },
+  "positive": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a fluffy cat sitting by a window, soft daylight, detailed fur",
+      "clip": [
+        "clip",
+        0
+      ]
+    }
+  },
+  "negative": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "",
+      "clip": [
+        "clip",
+        0
+      ]
+    }
+  },
+  "latent_low": {
+    "class_type": "EmptySD3LatentImage",
+    "inputs": {
+      "width": [
+        "preset",
+        0
+      ],
+      "height": [
+        "preset",
+        1
+      ],
+      "batch_size": 1
+    }
+  },
+  "sample_low": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": [
+        "preset",
+        5
+      ],
+      "cfg": 4.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "model": [
+        "unet",
+        0
+      ],
+      "positive": [
+        "positive",
+        0
+      ],
+      "negative": [
+        "negative",
+        0
+      ],
+      "latent_image": [
+        "latent_low",
+        0
+      ],
+      "denoise": 1.0
+    }
+  },
+  "decode_low": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "sample_low",
+        0
+      ],
+      "vae": [
+        "vae",
+        0
+      ]
+    }
+  },
+  "mrflow_upscale_encode": {
+    "class_type": "MrFlowUpscaleEncode",
+    "inputs": {
+      "image": [
+        "decode_low",
+        0
+      ],
+      "vae": [
+        "vae",
+        0
+      ],
+      "upscale_model": [
+        "upscale_model",
+        0
+      ],
+      "target_width": [
+        "preset",
+        2
+      ],
+      "target_height": [
+        "preset",
+        3
+      ],
+      "resize_method": "bicubic"
+    }
+  },
+  "mrflow_attach_ref": {
+    "class_type": "MrFlowAttachReferenceLatent",
+    "inputs": {
+      "positive": [
+        "positive",
+        0
+      ],
+      "negative": [
+        "negative",
+        0
+      ],
+      "latent": [
+        "mrflow_upscale_encode",
+        1
+      ]
+    }
+  },
+  "mrflow_refine": {
+    "class_type": "MrFlowQwenRefine",
+    "inputs": {
+      "model": [
+        "unet",
+        0
+      ],
+      "vae": [
+        "vae",
+        0
+      ],
+      "positive": [
+        "mrflow_attach_ref",
+        0
+      ],
+      "negative": [
+        "mrflow_attach_ref",
+        1
+      ],
+      "latent_image": [
+        "mrflow_upscale_encode",
+        1
+      ],
+      "seed": 43,
+      "steps": [
+        "preset",
+        6
+      ],
+      "cfg": 4.0,
+      "sampler_name": "euler",
+      "denoise": [
+        "preset",
+        4
+      ],
+      "print_schedule": true
+    }
+  },
+  "save_low": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "decode_low",
+        0
+      ],
+      "filename_prefix": "MrFlow/qwen_low"
+    }
+  },
+  "save_upscaled": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "mrflow_upscale_encode",
+        0
+      ],
+      "filename_prefix": "MrFlow/qwen_upscaled"
+    }
+  },
+  "save_refined": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "mrflow_refine",
+        1
+      ],
+      "filename_prefix": "MrFlow/qwen_refined"
+    }
+  }
+}
