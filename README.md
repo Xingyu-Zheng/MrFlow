@@ -93,7 +93,7 @@ The high-resolution refinement uses an explicit direct-sigma schedule. For examp
 
 ## 📦 Supported Demos
 
-Parameterized variants, additional model-family demos, and example-only helpers are available in `examples/`.
+Parameterized variants and additional model-family demos are available in `examples/`.
 
 | Script | Backbone | Notes |
 | --- | --- | --- |
