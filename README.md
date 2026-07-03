@@ -5,7 +5,7 @@
 ### Official implementation for MrFlow
 
 [![Paper](https://img.shields.io/badge/Paper-arXiv%3A2607.01642-b31b1b.svg)](https://arxiv.org/abs/2607.01642)
-[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Daily%20Papers-ffd21e.svg?logo=huggingface&logoColor=000)](https://huggingface.co/papers/2607.01642)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Daily%20Papers-ffd21e.svg?logo=huggingface)](https://huggingface.co/papers/2607.01642)
 [![Method](https://img.shields.io/badge/method-training--free-4c6fff.svg)](#highlights)
 [![Acceleration](https://img.shields.io/badge/speedup-10x%2B-green.svg)](#results)
 [![Backbones](https://img.shields.io/badge/backbones-FLUX%20%7C%20Qwen--Image%20%7C%20Z--Image-555.svg)](#supported-demos)
