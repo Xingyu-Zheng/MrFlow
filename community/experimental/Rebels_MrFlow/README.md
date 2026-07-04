@@ -1,3 +1,5 @@
+
+
 # ComfyUI-Rebels-MrFlow
 
 **ZIT Mr. Flow** and **Krea-2 Mr. Flow** — MrFlow training-free staged sampling
@@ -7,6 +9,29 @@ Z-Image Turbo and Krea-2 for ComfyUI.
 Method credit: [MrFlow by Xingyu-Zheng et al.](https://github.com/Xingyu-Zheng/MrFlow)
 (arXiv:2607.01642). Port by RealRebelAI. Works with GGUF / NF4 / FP8 / safetensors
 loaders — anything that outputs a normal MODEL. No extra dependencies.
+
+# Examples
+- Krea-2 (1024)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Krea-2 (2048)
+
+
+
+
 
 ## Nodes
 
@@ -23,7 +48,7 @@ loaders — anything that outputs a normal MODEL. No extra dependencies.
 3. **KSampler (stage 1)** — your normal model/CLIP/VAE loaders, steps ← `stage1_steps`,
    cfg ← `cfg`, sampler `euler`, scheduler `simple`, denoise 1.0.
 4. **VAE Decode** stage-1 latent.
-5. **Load Upscale Model** — RealESRGAN x2 (or any 2x SR model) → **Mr. Flow Upscale + Encode**
+5. **Load Upscale Model** — RealESRGAN x2 for 1024 → **Mr. Flow Upscale + Encode**
    with the decoded image, your VAE, and `target_width/height` from preset.
 6. **Refine node** — same model + conditioning as stage 1, `prepared_latent` in,
    steps ← `refine_steps`, denoise ← `refine_denoise`, cfg ← `cfg`, sampler `euler`.
@@ -43,8 +68,14 @@ when refine steps > 1).
 
 ## Notes
 
-- Use a real SR model for stage 2 (RealESRGAN x2 recommended, per the paper).
+- Use a real SR model for stage 2 (RealESRGAN x2 for 1024)
   Plain latent upscaling defeats the whole method.
+  
+  - grab `RealESRGAN_x2plus.pth` from the [official releases page](https://huggingface.co/rklaumbach/RealESRGAN_x2/blob/main/RealESRGAN_x2.pth)
+  
+
+  and place it in `ComfyUI/models/upscale_models/` yourself.
+  
 - The Qwen `reference_latents` attach from upstream is intentionally omitted —
   it's a Qwen-Image-specific conditioning mechanism that Z-Image and Krea-2 don't use.
 - Total budget: dominated by the cheap low-res pass; the refine is 1 step at
