@@ -30,6 +30,7 @@ MrFlow first samples a low-resolution image, upsamples the decoded result in pix
 
 ## 📢 News
 
+- [2026/07] 📰 MrFlow is listed on [Hugging Face Trending Papers](https://huggingface.co/papers/trending).
 - [2026/07] 💡 We add a [Practical Tips](#practical-tips) section and encourage everyone to share useful observations and takeaways with each other.
 - [2026/07] 🌱 We add a [community contribution area](community/) and welcome developers to share MrFlow ports, workflows, and experiments with each other.
 - [2026/07] 📰 MrFlow is featured on [Hugging Face Daily Papers](https://huggingface.co/papers/2607.01642).
