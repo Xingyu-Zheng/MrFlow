@@ -30,6 +30,7 @@ MrFlow first samples a low-resolution image, upsamples the decoded result in pix
 
 ## 📢 News
 
+- [2026/07] ⚠️ **Real-ESRGAN source / checkpoint clarification.** The paper experiments used the Real-ESRGAN code from [ai-forever/Real-ESRGAN](https://github.com/ai-forever/Real-ESRGAN) and the x2 weights from [ai-forever/Real-ESRGAN on Hugging Face](https://huggingface.co/ai-forever/Real-ESRGAN). This replaces the earlier README pointer to [xinntao/Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN), which is not the exact repository / weight source used in our experiments. The MrFlow pipeline itself is unchanged; this update just makes the reproduction path clearer.
 - [2026/07] 💬 We open [Discussions](https://github.com/Xingyu-Zheng/MrFlow/discussions) for broader method discussions, prior-work comparisons, workflow/runtime observations, and community experiences. Feel free to discuss them there.
 - [2026/07] 📰 MrFlow is listed on [Hugging Face Trending Papers](https://huggingface.co/papers/trending).
 - [2026/07] 💡 We add a [Practical Tips](#practical-tips) section and encourage everyone to share useful observations and takeaways with each other.
@@ -47,11 +48,14 @@ Create a Diffusers-compatible environment for the target backbone. The demos use
 - Transformers
 - Real-ESRGAN
 
-MrFlow uses Real-ESRGAN for x2 pixel-space super-resolution. Install Real-ESRGAN from the official project and download the x2 weights:
+MrFlow uses Real-ESRGAN for x2 pixel-space super-resolution. For the paper experiments, we used the following Real-ESRGAN source and weights:
 
 ```text
-https://github.com/xinntao/Real-ESRGAN
+Code:    https://github.com/ai-forever/Real-ESRGAN
+Weights: https://huggingface.co/ai-forever/Real-ESRGAN
 ```
+
+This replaces the earlier README pointer to [xinntao/Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN), which is not the exact repository / weight source used in our experiments.
 
 The scripts contain placeholder checkpoint paths. Replace them with local paths to the pretrained text-to-image model and Real-ESRGAN x2 weights before running.
 
@@ -194,4 +198,4 @@ If you find MrFlow useful, please cite our paper:
 
 ## 🙏 Acknowledgements
 
-This implementation builds on the Diffusers ecosystem and uses [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN) for pixel-space super-resolution.
+This implementation builds on the Diffusers ecosystem and uses [ai-forever/Real-ESRGAN](https://github.com/ai-forever/Real-ESRGAN) for pixel-space super-resolution.
