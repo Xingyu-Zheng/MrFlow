@@ -17,7 +17,7 @@ This repository provides the implementation of **MrFlow**, a training-free stage
 MrFlow first samples a low-resolution image, upsamples the decoded result in pixel space with Real-ESRGAN, re-encodes the upsampled image, injects scheduler-consistent low-strength noise, and performs a short high-resolution refinement. The pipeline shifts most denoising cost from expensive high-resolution sampling to cheaper low-resolution sampling while preserving local detail quality.
 
 <p align="center">
-  <img src="assets/framework.png" width="96%" alt="MrFlow framework">
+  <img src="assets/framework.webp" width="96%" alt="MrFlow framework">
 </p>
 
 ## ✨ Highlights
@@ -140,25 +140,25 @@ Pi-Flow examples are optional and require a separate local checkout of [LakonLab
 **Qwen-Image generation examples.** With 12 low-resolution steps and one high-resolution refinement step, MrFlow produces diverse 1024-resolution samples on Qwen-Image while reaching above `10x` end-to-end speedup.
 
 <p align="center">
-  <img src="assets/showcase-mrflow-qwen.png" width="96%" alt="MrFlow Qwen-Image samples">
+  <img src="assets/showcase-mrflow-qwen.jpg" width="96%" alt="MrFlow Qwen-Image samples">
 </p>
 
 **Accuracy-efficiency trade-off.** On FLUX.1-dev and Qwen-Image, MrFlow offers a flexible trade-off between generation quality and measured end-to-end speedup, and remains effective where other training-free strategies degrade sharply.
 
 <p align="center">
-  <img src="assets/tradeoff.png" width="96%" alt="MrFlow trade-off curve">
+  <img src="assets/tradeoff.webp" width="96%" alt="MrFlow trade-off curve">
 </p>
 
 **Runtime breakdown.** For Qwen-Image `12plus1`, measured end-to-end latency is `4.77s` versus `49.32s` for native 50-step inference. The main cost is shifted from high-resolution sampling to cheaper low-resolution sampling, while SR and VAE overhead remain small.
 
 <p align="center">
-  <img src="assets/efficiency.png" width="96%" alt="MrFlow runtime breakdown">
+  <img src="assets/efficiency.webp" width="96%" alt="MrFlow runtime breakdown">
 </p>
 
 ## 🧩 ComfyUI Plugin
 
 <p align="center">
-  <img src="assets/comfyui.png" width="96%" alt="MrFlow ComfyUI Plugin">
+  <img src="assets/comfyui.webp" width="96%" alt="MrFlow ComfyUI Plugin">
 </p>
 
 The repository also includes `ComfyUI-MrFlow/`, a ComfyUI custom-node extension for Qwen-oriented MrFlow workflows. It provides helper nodes, editable workflow and API JSON examples, a reusable subgraph, and a model-link helper for split Qwen-Image bundles.

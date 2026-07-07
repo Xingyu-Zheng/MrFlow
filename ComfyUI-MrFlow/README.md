@@ -1,7 +1,7 @@
 # ComfyUI-MrFlow
 
 <p align="center">
-  <img src="../assets/comfyui.png" width="96%" alt="MrFlow ComfyUI Plugin">
+  <img src="../assets/comfyui.webp" width="96%" alt="MrFlow ComfyUI Plugin">
 </p>
 
 MrFlow helper nodes for ComfyUI Qwen workflows.
