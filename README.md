@@ -6,7 +6,7 @@
 
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Trending%20Papers-ffd21e.svg?logo=huggingface)](https://huggingface.co/papers/trending)
 [![Papers with Code: #3 on OneIG-EN](https://paperswithcode.co/api/v1/papers/2607.01642/leaderboard-badge.svg?eval=16706&live=1)](https://paperswithcode.co/benchmark/oneig-en?task=image-generation&eval=16706)
-<br>
+<br> 
 [![Paper](https://img.shields.io/badge/Paper-arXiv%3A2607.01642-b31b1b.svg)](https://arxiv.org/abs/2607.01642)
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Daily%20Papers-ffd21e.svg?logo=huggingface)](https://huggingface.co/papers/2607.01642)
 [![Method](https://img.shields.io/badge/method-training--free-4c6fff.svg)](#highlights)
