@@ -1,3 +1,6 @@
 [submodule "community/experimental/Rebels_MrFlow"]
 	path = community/experimental/Rebels_MrFlow
 	url = https://github.com/RealRebelAI/Rebels_MrFlow
+[submodule "Real-ESRGAN"]
+	path = Real-ESRGAN
+	url = https://github.com/ai-forever/Real-ESRGAN.git

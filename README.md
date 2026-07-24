@@ -17,6 +17,14 @@
 
 This repository provides the implementation of **MrFlow**, a training-free staged sampling method for accelerating pretrained flow-matching text-to-image diffusion models.
 
+Clone the repository with submodules to also fetch the exact Real-ESRGAN source used by the paper experiments:
+
+```bash
+git clone --recursive https://github.com/Xingyu-Zheng/MrFlow.git
+```
+
+If you already cloned the repository, initialize the submodules with `git submodule update --init --recursive`.
+
 MrFlow first samples a low-resolution image, upsamples the decoded result in pixel space with Real-ESRGAN, re-encodes the upsampled image, injects scheduler-consistent low-strength noise, and performs a short high-resolution refinement. The pipeline shifts most denoising cost from expensive high-resolution sampling to cheaper low-resolution sampling while preserving local detail quality.
 
 <p align="center">
@@ -33,7 +41,7 @@ MrFlow first samples a low-resolution image, upsamples the decoded result in pix
 
 ## 📢 News
 
-- [2026/07] ⚠️ **Real-ESRGAN source / checkpoint clarification.** The paper experiments used the Real-ESRGAN code from [ai-forever/Real-ESRGAN](https://github.com/ai-forever/Real-ESRGAN) and the x2 weights from [ai-forever/Real-ESRGAN on Hugging Face](https://huggingface.co/ai-forever/Real-ESRGAN). This replaces the earlier README pointer to [xinntao/Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN), which is not the exact repository / weight source used in our experiments. The MrFlow pipeline itself is unchanged; this update just makes the reproduction path clearer.
+- [2026/07] 🏆 MrFlow ranks in the Top 3 on the [OneIG-EN leaderboard](https://paperswithcode.co/benchmark/oneig-en?task=image-generation&eval=16706) on Hugging Face's Papers with Code.
 - [2026/07] 💬 We open [Discussions](https://github.com/Xingyu-Zheng/MrFlow/discussions) for broader method discussions, prior-work comparisons, workflow/runtime observations, and community experiences. Feel free to discuss them there.
 - [2026/07] 📰 MrFlow is listed on [Hugging Face Trending Papers](https://huggingface.co/papers/trending).
 - [2026/07] 💡 We add a [Practical Tips](#practical-tips) section and encourage everyone to share useful observations and takeaways with each other.
@@ -51,14 +59,12 @@ Create a Diffusers-compatible environment for the target backbone. The demos use
 - Transformers
 - Real-ESRGAN
 
-MrFlow uses Real-ESRGAN for x2 pixel-space super-resolution. For the paper experiments, we used the following Real-ESRGAN source and weights:
+MrFlow uses Real-ESRGAN for x2 pixel-space super-resolution. The repository includes the Real-ESRGAN source as a Git submodule at [`Real-ESRGAN/`](Real-ESRGAN/) for the paper experiments. The corresponding model weights are available separately:
 
 ```text
 Code:    https://github.com/ai-forever/Real-ESRGAN
 Weights: https://huggingface.co/ai-forever/Real-ESRGAN
 ```
-
-This replaces the earlier README pointer to [xinntao/Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN), which is not the exact repository / weight source used in our experiments.
 
 The scripts contain placeholder checkpoint paths. Replace them with local paths to the pretrained text-to-image model and Real-ESRGAN x2 weights before running.
 
